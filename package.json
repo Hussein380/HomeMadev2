@@ -1,6 +1,7 @@
 {
   "name": "HomeMadev2",
   "version": "1.0.0",
+  "type": "module",
   "description": "MERN stack application for HomeMade",
   "main": "server.js",
   "scripts": {
@@ -8,6 +9,8 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.13.22"
