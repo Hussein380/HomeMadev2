@@ -1,24 +1,39 @@
 import mongoose from "mongoose";
 
-const chefSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Name is required"],
+const chefSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+    },
+    bio: {
+      type: String,
+    },
+    specialties: {
+      type: [String], // Array of strings
+      default: [],
+    },
+    profilePicture: {
+      type: String,
+    },
+    certificates: {
+      type: [String], // Array of URLs for certificates
+      default: [],
+    },
+    
   },
-  bio: String,
-  specialties: [String],
-  profilePicture: String,  // URL from Cloudinary
-  certificates: [String],  // URLs from Cloudinary (if uploaded)
-  location: {
-    type: { type: String, default: "Point" }, // GeoJSON type for location
-    coordinates: { type: [Number], required: true },
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Link to User model
-    required: true,
-  },
-}, { timestamps: true });
+  {
+    timestamps: true,
+  }
+);
+
+// Index for location-based queries
+chefSchema.index({ location: "2dsphere" });
 
 const Chef = mongoose.model("Chef", chefSchema);
 

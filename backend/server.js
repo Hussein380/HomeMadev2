@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.routes.js";
 
+import chefRoutes from "./routes/chef.routes.js";
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -20,6 +22,8 @@ connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/chef", chefRoutes);
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
