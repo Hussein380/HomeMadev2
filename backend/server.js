@@ -5,6 +5,7 @@ import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.routes.js";
 
 import chefRoutes from "./routes/chef.routes.js";
+import dishRoutes from "./routes/dish.routes.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -23,6 +24,7 @@ connectDB();
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/chef", chefRoutes);
+app.use("/api/dish", dishRoutes);
 
 
 // Start server
