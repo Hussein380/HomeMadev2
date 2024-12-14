@@ -62,3 +62,17 @@ router.put("/:id", async (req, res) => {
         res.status(400).json({ message: "Error updating dish", error });
     }
 });
+// Delete a dish by ID
+router.delete("/:id", async (req, res) => {
+    try {
+        const dish = await Dish.findByIdAndDelete(req.params.id);
+        if (!dish) {
+            return res.status(404).json({ message: "Dish not found" });
+        }
+        res.status(200).json({ message: "Dish deleted successfully" });
+    } catch (error) {
+        res.status(400).json({ message: "Error deleting dish", error });
+    }
+});
+
+export default router;
