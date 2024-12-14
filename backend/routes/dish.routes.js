@@ -33,4 +33,16 @@ router.get("/", async (req, res) => {
         res.status(400).json({ message: "Error fetching dishes", error });
     }
 });
+// Get a single dish by ID
+router.get("/:id", async (req, res) => {
+    try {
+        const dish = await Dish.findById(req.params.id).populate("chef", "name");
+        if (!dish) {
+            return res.status(404).json({ message: "Dish not found" });
+        }
+        res.status(200).json(dish);
+    } catch (error) {
+        res.status(400).json({ message: "Error fetching dish", error });
+    }
+});
 
