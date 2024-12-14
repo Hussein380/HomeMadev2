@@ -24,3 +24,13 @@ router.post("/", async (req, res) => {
         res.status(400).json({ message: "Error creating dish", error });
     }
 });
+// Get all dishes
+router.get("/", async (req, res) => {
+    try {
+        const dishes = await Dish.find().populate("chef", "name"); // Populate chef's name
+        res.status(200).json(dishes);
+    } catch (error) {
+        res.status(400).json({ message: "Error fetching dishes", error });
+    }
+});
+
