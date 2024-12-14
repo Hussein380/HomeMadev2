@@ -45,4 +45,20 @@ router.get("/:id", async (req, res) => {
         res.status(400).json({ message: "Error fetching dish", error });
     }
 });
-
+// Update a dish by ID
+router.put("/:id", async (req, res) => {
+    try {
+        const { name, description, price, image, quantity, likes } = req.body;
+        const updatedDish = await Dish.findByIdAndUpdate(
+            req.params.id,
+            { name, description, price, image, quantity, likes, dateUpdated: Date.now() },
+            { new: true }
+        );
+        if (!updatedDish) {
+            return res.status(404).json({ message: "Dish not found" });
+        }
+        res.status(200).json(updatedDish);
+    } catch (error) {
+        res.status(400).json({ message: "Error updating dish", error });
+    }
+});
