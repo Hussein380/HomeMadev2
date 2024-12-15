@@ -26,6 +26,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/chef", chefRoutes);
 app.use("/api/dish", dishRoutes);
 
+app.use("/uploads", express.static("uploads"));
+
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
