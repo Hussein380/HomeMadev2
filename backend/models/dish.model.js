@@ -5,7 +5,7 @@ const dishSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,  // Make user field optional
     },
     name: {
       type: String,
@@ -25,7 +25,7 @@ const dishSchema = new mongoose.Schema(
     chef: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Chef", // Reference to Chef model
-      required: true,
+      required: false,  // Make chef field optional
     },
     category: {
       type: String,

@@ -59,3 +59,4 @@ userSchema.index({ location: "2dsphere" });  // Corrected from UserSchema to use
 const User = mongoose.model("User", userSchema);
 
 export default User;
+
