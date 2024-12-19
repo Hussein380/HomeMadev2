@@ -23,5 +23,7 @@ router.get("/", DishController.getAllDishes);
 // Route for fetching a single dish by ID
 router.get("/:id", DishController.getDishById);
 
+// Define the route to delete a dish
+router.delete('/dishes/:id', DishController.deleteDish);
 export default router;
 
