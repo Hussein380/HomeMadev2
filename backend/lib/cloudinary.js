@@ -10,62 +10,58 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Modify uploadImage to accept URLs as well
-export const uploadImage = async (imageFile) => {
+// Modify uploadImage to accept folder as a parameter
+export const uploadImage = async (imageFile, folder) => {
   try {
     let result;
+    const folderPath = `homeMade/${folder}`; // Folder name passed as argument
+
     // Check if it's a URL or a local file
     if (imageFile.startsWith('http')) {
       result = await cloudinary.v2.uploader.upload(imageFile, {
-        folder: "homeMade/chef-profiles", 
+        folder: folderPath,
         use_filename: true,
         unique_filename: false,
       });
     } else {
       result = await cloudinary.v2.uploader.upload(imageFile, {
-        folder: "homeMade/chef-profiles", 
+        folder: folderPath,
         use_filename: true,
         unique_filename: false,
       });
     }
+
     return result.secure_url;
   } catch (error) {
     throw new Error("Error uploading image to Cloudinary: " + error.message);
   }
 };
 
-
-
-
 // Delete image function with fallback and checks for publicId
 export const deleteImageFromCloudinary = async (imageUrl) => {
   try {
-    // Validate the imageUrl
     if (!imageUrl || typeof imageUrl !== "string") {
       throw new Error("Invalid image URL provided.");
     }
 
-    // Extract public ID from the URL
     const parts = imageUrl.split("/");
     if (parts.length < 2) {
       throw new Error("Malformed image URL.");
     }
 
-    // Fallback logic to ensure publicId extraction is accurate
-    const lastPart = parts.pop(); // Get the last part of the URL
-    const publicId = lastPart.split(".")[0]; // Extract the ID before the file extension
+    const lastPart = parts.pop(); 
+    const publicId = lastPart.split(".")[0]; 
     if (!publicId) {
       throw new Error("Unable to extract public ID from image URL.");
     }
 
-    // Construct the full public ID path
     const folderPath = "homeMade/chef-profiles/";
     const fullPublicId = `${folderPath}${publicId}`;
 
-    // Perform the deletion
     const result = await cloudinary.v2.uploader.destroy(fullPublicId);
-    return result; // Return the result of the deletion
+    return result; 
   } catch (error) {
     throw new Error("Error deleting image from Cloudinary: " + error.message);
   }
 };
+

@@ -1,18 +1,51 @@
 import mongoose from "mongoose";
 
-const dishSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String },
-    price: { type: Number, required: true },
-    image: { type: String }, // New field for image URL or path
-    dateUpdated: { type: Date, default: Date.now }, // New field for last updated date
-    likes: { type: Number, default: 0 }, // New field for likes
-    quantity: { type: Number, required: true, default: 1 }, // New field for quantity
-    chef: { type: mongoose.Schema.Types.ObjectId, ref: "Chef", required: true },
-    createdAt: { type: Date, default: Date.now }
-});
+const dishSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: [true, "Dish name is required"],
+    },
+    description: {
+      type: String,
+      required: [true, "Dish description is required"],
+    },
+    price: {
+      type: Number,
+      required: [true, "Dish price is required"],
+    },
+    image: {
+      type: String, // URL or file path to image
+    },
+    chef: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chef", // Reference to Chef model
+      required: true,
+    },
+    category: {
+      type: String,
+      default: "General",
+    },
+    available: {
+      type: Boolean,
+      default: true,
+    },
+    likes: {
+      type: Number,
+      default: 0, // Initialize likes to 0
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-// Create and export the Dish model
 const Dish = mongoose.model("Dish", dishSchema);
 
 export default Dish;
+
