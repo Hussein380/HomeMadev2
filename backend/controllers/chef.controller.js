@@ -1,4 +1,3 @@
-
 import Chef from "../models/chef.models.js";
 import Review from "../models/review.model.js";
 import User from "../models/user.models.js";
@@ -49,7 +48,9 @@ export const createChefProfile = async (req, res) => {
       user: req.user.id,
       name,
       bio,
-      specialties: Array.isArray(specialties) ? specialties : specialties.split(","),
+      specialties: Array.isArray(specialties)
+        ? specialties
+        : specialties.split(","),
       profilePicture: profilePictureUrl,
       certificates: certificateUrls,
       location: { latitude, longitude },
@@ -64,7 +65,9 @@ export const createChefProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating chef profile:", error);
-    return res.status(500).json({ error: "Server error. Please try again later." });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
 
@@ -77,13 +80,24 @@ export const getChefProfile = async (req, res) => {
       return res.status(404).json({ error: "Chef profile not found." });
     }
 
+    // Fetch the user's location (latitude, longitude) from the User model
+    const user = await User.findById(req.user.id);
+    if (!user || !user.location) {
+      return res.status(404).json({ error: "User location not found." });
+    }
+    const { latitude, longitude } = user.location;
+
+
     const response = {
       name: chefProfile.name || "Name not provided",
       bio: chefProfile.bio || "No bio available",
       specialties: chefProfile.specialties || [],
-      profilePicture: chefProfile.profilePicture || "https://res.cloudinary.com/<your-cloud-name>/image/upload/v1/homeMade/default-profile.png",
+      profilePicture:
+        chefProfile.profilePicture ||
+        "https://res.cloudinary.com/<your-cloud-name>/image/upload/v1/homeMade/default-profile.png",
       certificates: chefProfile.certificates || [],
-      location: chefProfile.location || { latitude: null, longitude: null },
+      location: { latitude, longitude },
+    
     };
 
     return res.status(200).json({
@@ -92,7 +106,9 @@ export const getChefProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching chef profile:", error);
-    return res.status(500).json({ error: "Server error. Please try again later." });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
 
@@ -115,13 +131,17 @@ export const updateChefProfile = async (req, res) => {
         const imagePath = req.file ? req.file.path : req.body.profilePicture;
         profilePictureUrl = await uploadImage(imagePath);
       } catch (error) {
-        return res.status(500).json({ error: "Image upload failed: " + error.message });
+        return res
+          .status(500)
+          .json({ error: "Image upload failed: " + error.message });
       }
     }
 
     chefProfile.name = name || chefProfile.name;
     chefProfile.bio = bio || chefProfile.bio;
-    chefProfile.specialties = Array.isArray(specialties) ? specialties : specialties.split(",");
+    chefProfile.specialties = Array.isArray(specialties)
+      ? specialties
+      : specialties.split(",");
     chefProfile.profilePicture = profilePictureUrl;
 
     // Save the updated profile
@@ -133,7 +153,9 @@ export const updateChefProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating chef profile:", error);
-    return res.status(500).json({ error: "Server error. Please try again later." });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
 
@@ -146,7 +168,9 @@ export const deleteChefProfile = async (req, res) => {
 
     // Check if the logged-in user matches the chef profile's user
     if (chefProfile.user.toString() !== req.user.id) {
-      return res.status(403).json({ error: "You are not authorized to delete this profile." });
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this profile." });
     }
 
     // Delete profile picture from Cloudinary if it exists
@@ -161,10 +185,14 @@ export const deleteChefProfile = async (req, res) => {
     // Delete chef profile from database
     await Chef.findByIdAndDelete(chefProfile._id);
 
-    return res.status(200).json({ message: "Chef profile deleted successfully." });
+    return res
+      .status(200)
+      .json({ message: "Chef profile deleted successfully." });
   } catch (error) {
     console.error("Error deleting chef profile:", error);
-    return res.status(500).json({ error: "Server error. Please try again later." });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
 

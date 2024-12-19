@@ -7,6 +7,10 @@ import {
   updateChefProfile,
   deleteChefProfile,
   getChefStats,
+  addReview,
+  getReviews,
+  addBooking,
+  getBookings,
 } from "../controllers/chef.controller.js";
 import { protectRoute, roleBasedAccess } from "../middlewares/auth.middleware.js";
 import {
@@ -46,5 +50,16 @@ router.delete("/profile", protectRoute, roleBasedAccess("chef"), deleteChefProfi
 router.get("/me", protectRoute, roleBasedAccess("chef"), getChefStats);
 
 
+// Add a review for a chef
+router.post("/reviews/:id", protectRoute, roleBasedAccess("user"), addReview);
+
+// Get reviews for a chef
+router.get("/reviews/:id", protectRoute, getReviews);
+
+// Create a booking for a chef
+router.post("/bookings/:id", protectRoute, roleBasedAccess("user"), addBooking);
+
+// Get bookings for a chef
+router.get("/bookings/:id", protectRoute, getBookings);
 
 export default router;
