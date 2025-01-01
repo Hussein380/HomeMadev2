@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 
 const dishSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: false,  // Make user field optional
-    },
     name: {
       type: String,
       required: [true, "Dish name is required"],
@@ -15,17 +10,17 @@ const dishSchema = new mongoose.Schema(
       type: String,
       required: [true, "Dish description is required"],
     },
+    images: {
+      type: [String], // Array of image URLs from Firebase
+      default: [],    // Initialize as an empty array
+    },
+    chef: {
+      type: String,   // Store chef ID as a string
+      required: true, // Ensure every dish has an associated chef
+    },
     price: {
       type: Number,
       required: [true, "Dish price is required"],
-    },
-    image: {
-      type: String, // URL or file path to image
-    },
-    chef: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Chef", // Reference to Chef model
-      required: false,  // Make chef field optional
     },
     category: {
       type: String,

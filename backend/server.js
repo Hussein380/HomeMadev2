@@ -7,6 +7,11 @@ import authRoutes from "./routes/auth.routes.js";
 import chefRoutes from "./routes/chef.routes.js";
 import dishRoutes from "./routes/dish.routes.js";
 
+import experienceRoutes from "./routes/experience.routes.js";
+import certificationRoutes from "./routes/certification.routes.js";
+import chatroomRoutes from "./routes/chatroom.routes.js";
+import userRoutes from "./routes/user.route.js";
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -22,9 +27,14 @@ app.use(cookieParser()); // Parse cookies
 connectDB();
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/chef", chefRoutes);
+app.use("/api/", authRoutes);
+app.use("/api/chefs", chefRoutes);
 app.use("/api/dish", dishRoutes);
+app.use(userRoutes);
+
+app.use("/api/experiences", experienceRoutes);
+app.use("/api/certifications", certificationRoutes);
+app.use("/api/chatrooms", chatroomRoutes);
 
 app.use("/uploads", express.static("uploads"));
 

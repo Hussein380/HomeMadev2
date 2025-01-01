@@ -1,13 +1,16 @@
 import express from "express";
-import { login, logout, signup, refreshToken, getProfile } from "../controllers/auth.controller.js";
+import { login, logout, signup, resetPassword, refreshToken, getProfile } from "../controllers/auth.controller.js";
 import { protectRoute, roleBasedAccess } from "../middlewares/auth.middleware.js";
-
 
 const router = express.Router();
 // Public routes
-router.post("/signup", signup);
-router.post("/login", login);
-router.post("/logout", logout);
+router.post("/auth/signup", signup);
+router.post("/auth/login", login);
+router.post("/auth/logout", logout);
+router.put("/auth/reset", resetPassword);
+router.get("/auth/profile", getProfile);
+//router.put("/profile/update", protectRoute, updateProfile);
+
 
 // Protected routes
 router.post("/refresh-token", refreshToken);

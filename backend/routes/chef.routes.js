@@ -31,11 +31,11 @@ router.post(
 );
 
 // Get chef profile
-router.get("/profile", protectRoute, roleBasedAccess("chef"), getChefProfile);
+router.get("/", protectRoute, roleBasedAccess("chef"), getChefProfile);
 
 // Update chef profile
 router.put(
-  "/profile",
+  "/update",
   protectRoute,
   roleBasedAccess("chef"),
   uploadProfilePicture,
